@@ -1,8 +1,8 @@
 var oldOnLoad = window.onload;
 window.onload = function() {
 	oldOnLoad();
-	console.log('hai');
-	var gui = new dat.GUI();
+	var gui = new dat.GUI()
+		, g = gameVars.george;
 	var jump = gui.addFolder('Jump');
 	jump.add(g, 'jumpHeight');
 	jump.add(g, 'jumpSpace');

@@ -1,6 +1,7 @@
-george = {
+var george = {
   init: function(canvas) {
-    var self = this;
+    var self = this
+      , g = gameVars.george;
     canvas.Input.keyDown(Input.Right, function() {
       if (!self.intervals.walkingRight) {
         self.intervals.walkingRight = setInterval(function() {
@@ -21,6 +22,7 @@ george = {
         self.george2Walk.play('move', 'loop');
       }
     });
+
     canvas.Input.keyUp(Input.Right, function() {
       self.george2Walk.stop();
       clearInterval(self.intervals.walkingRight);
@@ -31,6 +33,7 @@ george = {
       clearInterval(self.intervals.walkingLeft);
       self.intervals.walkingLeft = null;
     });
+
     canvas.Input.keyDown(Input.Up, function() {
       if (self.jumping) {
         return;
@@ -53,10 +56,37 @@ george = {
           self.jumping = false;
           if (canvas.Input.isPressed([Input.Left, Input.Right])) {
             self.george2Walk.play('move', 'loop');
+          } else {
+            self.george.drawImage('george2still');
           }
         }
       };
       goUp();
     });
   }
-}
+};
+
+var enemy1 = {
+  init: function() {
+    var self = this;
+    var me = self.enemy1;
+
+    var goLeft = function() {
+      if (me.x > 300) {
+        me.x -= 2;
+        setTimeout(goLeft, 25);
+      } else {
+        setTimeout(goRight, 25);
+      }
+    };
+    var goRight = function() {
+      if (me.x < 450) {
+        me.x += 2;
+        setTimeout(goRight, 25);
+      } else {
+        setTimeout(goLeft, 25);
+      }
+    };
+    goLeft();
+  }
+};

@@ -1,10 +1,12 @@
 // Global game variables for debug with dat.gui
-var g = {
-	jumpHeight: 40,
-	jumpSpace: 1,
-	jumpIntervalTime: 10,
-	moveSpace: 2,
-	moveTime: 25
+var gameVars = {
+	george: {
+		jumpHeight: 40,
+		jumpSpace: 1,
+		jumpIntervalTime: 10,
+		moveSpace: 2,
+		moveTime: 25
+	}
 };
 
 var animationFactory = function(spriteSheet) {
