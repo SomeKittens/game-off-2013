@@ -29,17 +29,41 @@ var animationFactory = function(spriteSheet, portal) {
         },
         frequence: 1
       },
-      attack0: {
-        frames: [0, 4],
+      jump: {
+        frames: [49, 60],
         size: {
           width: 64,
           height: 64
         },
         patternSize: {
-          width: 4,
-          height: 1
+          width: 16,
+          height: 5
         },
         frequence: 1
+      },
+      attack0: {
+        frames: [60, 65],
+        size: {
+          width: 64,
+          height: 64
+        },
+        patternSize: {
+          width: 16,
+          height: 5
+        },
+        frequence: 2
+      },
+      attack1: {
+        frames: [65, 70],
+        size: {
+          width: 64,
+          height: 64
+        },
+        patternSize: {
+          width: 16,
+          height: 5
+        },
+        frequence: 2
       }
     }
 	});

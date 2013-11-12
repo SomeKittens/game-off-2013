@@ -42,7 +42,11 @@ var george = {
     // Attacking
     canvas.Input.keyDown(Input.A, function() {
       self.george2Walk.stop();
-      self.george2Walk.play('attack0', 'stop');
+      if (Math.random() > 0.5) {
+        self.george2Walk.play('attack0', 'stop');
+      } else {
+        self.george2Walk.play('attack1', 'stop');
+      }
     });
 
     canvas.Input.keyDown(Input.Up, function() {
