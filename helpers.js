@@ -39,7 +39,7 @@ var animationFactory = function(spriteSheet, portal) {
           width: 16,
           height: 5
         },
-        frequence: 1
+        frequence: 4
       },
       attack0: {
         frames: [60, 65],

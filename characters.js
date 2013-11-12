@@ -49,12 +49,14 @@ var george = {
       }
     });
 
-    canvas.Input.keyDown(Input.Up, function() {
+    canvas.Input.keyDown([Input.Up, Input.Z], function() {
       if (self.jumping) {
         return;
       }
       self.jumping = true;
       self.george2Walk.stop();
+      // No idea why this only works with loop.
+      self.george2Walk.play('jump', 'loop');
       var goUp = function() {
         if (self.george.y > (165 - g.jumpHeight)) {
           setTimeout(goUp, g.jumpIntervalTime);
