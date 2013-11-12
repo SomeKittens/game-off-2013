@@ -12,5 +12,6 @@ window.onload = function() {
 	move.add(g, 'moveSpace');
 	move.add(g, 'moveTime');
 
+	gui.add(g, 'activatePortals');
 	jump.open();
 };

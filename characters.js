@@ -2,6 +2,11 @@ var george = {
   init: function(canvas) {
     var self = this
       , g = gameVars.george;
+    if (g.activatePortals) {
+      self.george2Walk = animationFactory('george2sprites', true);
+      self.george2Walk.add(self.george);
+      g.activatePortals = false;
+    }
     canvas.Input.keyDown(Input.Right, function() {
       if (!self.intervals.walkingRight) {
         self.intervals.walkingRight = setInterval(function() {
@@ -32,6 +37,12 @@ var george = {
       self.george2Walk.stop();
       clearInterval(self.intervals.walkingLeft);
       self.intervals.walkingLeft = null;
+    });
+
+    // Attacking
+    canvas.Input.keyDown(Input.A, function() {
+      self.george2Walk.stop();
+      self.george2Walk.play('attack0', 'stop');
     });
 
     canvas.Input.keyDown(Input.Up, function() {
@@ -90,3 +101,9 @@ var enemy1 = {
     goLeft();
   }
 };
+
+var ratsel = {
+  init: function() {
+
+  }
+}

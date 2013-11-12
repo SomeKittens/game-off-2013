@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <head>
-	<title>Hello World</title>
+	<title>George Meingartner</title>
+	<style>
+	canvas {
+		/* Debug, helps us find holes in background */
+		background: blue;
+	}
+	</style>
 </head>
 <body>
+	<!-- Libraries -->
 	<script src="canvasengine.min.js"></script>
 	<script src="extends/Input.js"></script>
 	<script src="extends/Animation.js"></script>
 	<script src="extends/Hit.js"></script>
+	<script src="extends/Scrolling.js"></script>
 	<script src="dat.gui.min.js"></script>
 
-
-	<script src="george.js"></script>
-	<script src="animationFactory.js"></script>
+	<!-- actual c0dez -->
+	<script src="characters.js"></script>
+	<script src="helpers.js"></script>
 	<script src="main.js"></script>
 	<script src="debug.js"></script>
-	<canvas id="canvas" width="1000" height="600" style="background: blue"></canvas>
+	<canvas id="canvas" width="512" height="256"></canvas>
 </body>
