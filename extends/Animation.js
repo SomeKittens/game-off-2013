@@ -547,14 +547,34 @@ Example :
 			var i = 0;
 			var freq = null;
 			var img_seq = 0;
+			var prevSeq;
 			
-			this.stop();
+			this._stop = true;
 			
 			this.el.addLoopListener(function() {
-				var t;
-				
-				
-				var seq = self._animations[self._seq], loop = self._loop == "loop";
+				if (self._stop) {
+					freq = null;
+					i = 0;
+					if (self.cb) {
+						if (self.cb.call) {
+							self.cb();
+							self.cb = null;
+						} else if (typeof self.cb === 'string') {
+							this.drawImage(self.cb);
+							self.cb = null;
+						}
+					}
+					return;
+				}
+
+				// Catch when we're interrupted and haven't had a chance to reset
+				if (self._seq !== prevSeq) {
+					prevSeq = self._seq;
+					i = 0;
+					freq = null;
+				}
+				var seq = self._animations[self._seq]
+					, loop = self._loop == "loop";
 				
 				function seqSize(img) {
 					if (seq.size) return seq.size;
@@ -571,21 +591,6 @@ Example :
 					freq = seq.frequence;
 				}
 				
-				if (self._stop) {
-					if (seq) freq = seq.frequence;
-					i = 0;
-					if (self.cb) {
-						console.log(self.cb);
-						if (self.cb.call) {
-							self.cb();
-							self.cb = null;
-						} else if (typeof self.cb === 'string') {
-							this.drawImage(self.cb);
-							self.cb = null;
-						}
-					}
-					return;
-				}
 				freq++;
 
 				if (freq >= seq.frequence) {
@@ -639,7 +644,7 @@ Example :
 						function finish() {
 							if (self._loop == "stop") {
 								if (seq.finish) seq.finish.call(self);
-								self.stop();
+								self._stop = true;
 								return true;
 							}
 							else if (self._loop == "remove") {
@@ -650,7 +655,7 @@ Example :
 									this.remove();
 								}
 								if (seq.finish) seq.finish.call(self);
-								self.stop();
+								self._stop = true;
 								return true;
 							}
 							return false;
@@ -699,6 +704,7 @@ Example :
 							
 							if (id > seq.frames[1]) {
 								i = 0;
+								id = 0;
 								finish.call(this);
 								if (!self.cb) {
 									drawImage(this, seq.frames[0]);

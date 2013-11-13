@@ -191,8 +191,9 @@ var Thug = function(xCoord, yCoord) {
     },
     kill: function() {
       if (thug.alive) {
-        motions.stop();
         thug.alive = false;
+        x = motions;
+        y = thug;
         motions.play('die', 'stop', 'thugDead');
       }
     }
