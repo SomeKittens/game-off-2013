@@ -38,9 +38,9 @@ var animationFactory = {
           images: 'george2sprites',
           animations: {
             move: ani([0, 49], 1),
-            jump: ani([49, 60], 4),
-            attack0: ani([60, 65], 2),
-            attack1: ani([65, 69], 2)
+            jump: ani([50, 60], 4),
+            attack0: ani([61, 65], 2),
+            attack1: ani([66, 69], 2)
           }
         };
         break;
