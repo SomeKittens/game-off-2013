@@ -589,7 +589,7 @@ Example :
 				freq++;
 
 				if (freq >= seq.frequence) {
-					if (self._images instanceof Array) {	
+					if (self._images instanceof Array) {  
 						var img = self._images[img_seq];
 						seqSize(img);
 						this.drawImage(img);
@@ -600,7 +600,6 @@ Example :
 								self._stop = true;
 							}
 						}
-						
 					}
 					else {
 						var img = Global_CE.Materials.get(self._images), sx = 0, sy = 0;
@@ -656,7 +655,6 @@ Example :
 							}
 							return false;
 						}
-						
 				
 						if (seq.frames[0] instanceof Array) {
 
@@ -702,7 +700,9 @@ Example :
 							if (id > seq.frames[1]) {
 								i = 0;
 								finish.call(this);
-								drawImage(this, seq.frames[0]);
+								if (!self.cb) {
+									drawImage(this, seq.frames[0]);
+								}
 							}
 							else {
 								drawImage(this, id);
