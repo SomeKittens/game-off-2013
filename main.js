@@ -50,7 +50,7 @@ canvas.Scene.new({
     self.george.y = 165;
     self.scrolling.setMainElement(self.george);
 
-    var testThug = Thug.init.call(self, 300, 165);
+    var testThug = Thug.call(self, 300, 165);
     self.thugs.push(testThug);
 
     var foreground = self.createElement();

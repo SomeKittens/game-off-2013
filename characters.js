@@ -103,36 +103,31 @@ var enemy1 = {
   }
 };
 
-var Thug = {
-  // Possibly array of thugs?  Each thug being an object with the
-  //  thug and animations specific to that thug.
-  // Or make our own thug object
-  init: function(xCoord, yCoord) {
-    var self = this;
-    var thug = self.createElement();
-    thug.x = xCoord || 0;
-    thug.y = yCoord || 0;
-    thug.drawImage('thugStill');
-    var motions = animationFactory.generate('thug');
-    motions.add(thug);
-    return {
-      el: thug,
-      motions: motions,
-      update: function(canvas) {
-        var self = this;
-        var dist = self.george.x - thug.x;
-        if (dist >= 0 && dist < 100) {
-          thug.x += 1;
-          motions.play('walk', 'loop');
-        } else if (dist < 0 && dist > -100) {
-          thug.x -= 1;
-          motions.play('walk', 'loop');
-        } else {
-          motions.stop();
-        }
+var Thug = function(xCoord, yCoord) {
+  var self = this;
+  var thug = self.createElement();
+  thug.x = xCoord || 0;
+  thug.y = yCoord || 0;
+  thug.drawImage('thugStill');
+  var motions = animationFactory.generate('thug');
+  motions.add(thug);
+  return {
+    el: thug,
+    motions: motions,
+    update: function(canvas) {
+      var self = this;
+      var dist = self.george.x - thug.x;
+      if (dist >= 0 && dist < 100) {
+        thug.x += 1;
+        motions.play('walk', 'loop');
+      } else if (dist < 0 && dist > -100) {
+        thug.x -= 1;
+        motions.play('walk', 'loop');
+      } else {
+        motions.stop();
       }
     }
-  }
+  };
 };
 
 var ratsel = {
