@@ -1,70 +1,64 @@
 // Global game variables for debug with dat.gui
 var gameVars = {
-	george: {
-		jumpHeight: 40,
-		jumpSpace: 1,
-		jumpIntervalTime: 10,
-		moveSpace: 2,
-		moveTime: 25,
-    activatePortals: false
-	}
+  george: {
+    jumpHeight: 40,
+    jumpSpace: 1,
+    jumpIntervalTime: 10,
+    moveSpace: 2,
+    moveTime: 25
+  }
 };
 
-var animationFactory = function(spriteSheet, portal) {
-  console.log(portal);
-  var wid = portal ? 17 : 16;
-  console.log(wid);
-	return canvas.Animation.new({
-    images: spriteSheet,
-    animations: {
-      move: {
-        frames: [0, 49],
-        size: {
-          width: 64,
-          height: 64
-        },
-        patternSize: {
-          width: wid,
-          height: 5
-        },
-        frequence: 1
-      },
-      jump: {
-        frames: [49, 60],
+
+var animationFactory = {
+  generate: function(character) {
+    var datums
+      , hei;
+    var ani = function(frames, freq) {
+      return {
+        frames: frames,
         size: {
           width: 64,
           height: 64
         },
         patternSize: {
           width: 16,
-          height: 5
+          height: hei
         },
-        frequence: 4
-      },
-      attack0: {
-        frames: [60, 65],
-        size: {
-          width: 64,
-          height: 64
-        },
-        patternSize: {
-          width: 16,
-          height: 5
-        },
-        frequence: 2
-      },
-      attack1: {
-        frames: [65, 70],
-        size: {
-          width: 64,
-          height: 64
-        },
-        patternSize: {
-          width: 16,
-          height: 5
-        },
-        frequence: 2
-      }
+        frequence: freq
+      };
+    };
+    switch (character) {
+      case 'george2':
+        hei = 5;
+        datums = {
+          images: 'george2sprites',
+          animations: {
+            move: ani([0, 49], 1),
+            jump: ani([49, 60], 4),
+            attack0: ani([60, 65], 2),
+            attack1: ani([65, 69], 2)
+          }
+        };
+        break;
+      case 'thug':
+      hei = 7;
+        datums = {
+          images: 'thugSprites',
+          animations: {
+            walk: ani([0, 49], 1),
+            grab: ani([50, 60], 1),
+            grabPunch: ani([60, 66], 1),
+            pain1: ani([66, 71], 1),
+            pain2: ani([71, 76], 1),
+            idle: ani([76, 100], 1)
+          }
+        };
+        break;
+      default:
+        throw new Error('You haven\'t made that character yet, you dolt');
+        break;
     }
-	});
+    return canvas.Animation.new(datums);
+  }
 };
