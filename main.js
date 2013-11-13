@@ -1,9 +1,15 @@
 
-var canvas = CE.defines('canvas')
+var canvas = CE.defines('canvas', {
+  soundmanager: {
+    url: 'extends/swf/',
+    debugMode: false
+  }
+})
   .extend(Input)
   .extend(Hit)
   .extend(Animation)
   .extend(Scrolling)
+  //.extend(Sound)
   .ready(function() {
   canvas.Scene.call('level1');
 });
@@ -21,6 +27,9 @@ canvas.Scene.new({
       thugSprites: 'img/thug.png',
       enemy1still: 'img/enemy1still.png',
       enemy1walk: 'img/enemy1walk.png'
+    },
+    sounds: {
+      lvl1: 'sound/lvl1.mp3'
     }
   },
   preload: function(stage, pourcent) {
@@ -29,6 +38,7 @@ canvas.Scene.new({
   ready: function(stage) {
     var self = this;
     console.log('ready');
+    canvas.Sound.playLoop('lvl1');
 
     // Variables that are used in render but need defaults
     self.jumping = false;

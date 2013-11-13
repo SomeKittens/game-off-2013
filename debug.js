@@ -1,6 +1,8 @@
 var oldOnLoad = window.onload;
 window.onload = function() {
-	oldOnLoad();
+	if (oldOnLoad && oldOnLoad.call) {
+		oldOnLoad();
+	}
 	var gui = new dat.GUI()
 		, g = gameVars.george;
 	var jump = gui.addFolder('Jump');
@@ -12,5 +14,6 @@ window.onload = function() {
 	move.add(g, 'moveSpace');
 	move.add(g, 'moveTime');
 
+	gui.add(gameVars, 'noLose');
 	jump.open();
 };

@@ -15,6 +15,7 @@ var George = function(xCoord, yCoord) {
       var self = this
         , g = gameVars.george;
       canvas.Input.keyDown(Input.Right, function() {
+        console.log()
         if (!self.intervals.walkingRight) {
           self.intervals.walkingRight = setInterval(function() {
             george.x += g.moveSpace;
@@ -158,6 +159,9 @@ var Thug = function(xCoord, yCoord) {
       }, 750);
       self.george.el.health -= 1;
       console.log(self.george.el.health);
+      if (!self.george.el.health && !gameVars.noLose) {
+        canvas.Scene.call('level1');
+      }
     }
     var action = Math.random() > 0.5 ? 'grab' : 'grabPunch';
     motions.play(action, 'stop');
