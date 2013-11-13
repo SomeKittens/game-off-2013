@@ -131,7 +131,7 @@ var Thug = function(xCoord, yCoord) {
 
   thug.x = xCoord || 0;
   thug.y = yCoord || 0;
-  thug.health = t.health;
+  thug.alive = true;
   thug.drawImage('thugStill');
   motions.add(thug);
 
@@ -146,6 +146,19 @@ var Thug = function(xCoord, yCoord) {
     }
     thug.attacking = true;
     waiting = 0;
+    if (!self.george.el.invulnerable) {
+      self.george.el.invulnerable = true;
+      var interval = setInterval(function() {
+        self.george.el.toggle();
+      }, 100);
+      setTimeout(function() {
+        self.george.el.invulnerable = false;
+        self.george.el.show();
+        clearInterval(interval);
+      }, 750);
+      self.george.el.health -= 1;
+      console.log(self.george.el.health);
+    }
     var action = Math.random() > 0.5 ? 'grab' : 'grabPunch';
     motions.play(action, 'stop');
   };
@@ -155,25 +168,27 @@ var Thug = function(xCoord, yCoord) {
     update: function(canvas) {
       var self = this;
       var dist = self.george.el.x - thug.x;
-
-      if (dist > 25 && dist < 100) {
-        thug.waiting = 0;
-        thug.attacking = false;
-        thug.x += 1;
-        motions.play('walk', 'loop');
-      } else if (dist < -25 && dist > -100) {
-        thug.waiting = 0;
-        thug.attacking = false;
-        thug.x -= 1;
-        motions.play('walk', 'loop');
-      } else if (dist <= 25 && dist >= -25) {
-        attack();
-      } else {
-        motions.stop();
+      if (thug.alive) {
+        if (dist > 25 && dist < 100) {
+          thug.waiting = 0;
+          thug.attacking = false;
+          thug.x += 1;
+          motions.play('walk', 'loop');
+        } else if (dist < -25 && dist > -100) {
+          thug.waiting = 0;
+          thug.attacking = false;
+          thug.x -= 1;
+          motions.play('walk', 'loop');
+        } else if (dist <= 25 && dist >= -25) {
+          attack();
+        } else {
+          motions.stop();
+        }
       }
     },
     kill: function() {
-      thug.hide();
+      thug.alive = false;
+      thug.remove();
     }
   };
 };

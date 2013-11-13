@@ -23,7 +23,6 @@ canvas.Scene.new({
     }
   },
   preload: function(stage, pourcent) {
-    console.log('preloaded');
     console.log(pourcent);
   },
   ready: function(stage) {
@@ -43,7 +42,6 @@ canvas.Scene.new({
     stage.append(self.bg0);
 
     self.george = George.call(self, 0, 165);
-    console.log(self.george);
     self.scrolling.setMainElement(self.george.el);
 
     var testThug = Thug.call(self, 100, 165);

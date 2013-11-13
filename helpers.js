@@ -8,7 +8,6 @@ var gameVars = {
     moveTime: 25
   },
   thug: {
-    health: 3,
     moveSpace: 1
   }
 };
