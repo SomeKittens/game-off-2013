@@ -182,13 +182,19 @@ var Thug = function(xCoord, yCoord) {
         } else if (dist <= 25 && dist >= -25) {
           attack();
         } else {
-          motions.stop();
+          motions.stop();/*TODO
+          if (Math.random() > 0.99) {
+            motions.play('idle', 'stop');
+          }*/
         }
       }
     },
     kill: function() {
-      thug.alive = false;
-      thug.remove();
+      if (thug.alive) {
+        motions.stop();
+        thug.alive = false;
+        motions.play('die', 'stop', 'thugDead');
+      }
     }
   };
 };

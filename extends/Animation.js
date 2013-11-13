@@ -574,6 +574,16 @@ Example :
 				if (self._stop) {
 					if (seq) freq = seq.frequence;
 					i = 0;
+					if (self.cb) {
+						console.log(self.cb);
+						if (self.cb.call) {
+							self.cb();
+							self.cb = null;
+						} else if (typeof self.cb === 'string') {
+							this.drawImage(self.cb);
+							self.cb = null;
+						}
+					}
 					return;
 				}
 				freq++;
@@ -725,10 +735,13 @@ Example :
 * stop : The animation is done once and stops
 * remove : The animation is done once and removed at the end
 */
-		play: function(seq, type) {
+		play: function(seq, type, cb) {
 			this._loop = type;
 			this._seq = seq;
 			this._stop = false;
+			if (cb) {
+				this.cb = cb;
+			}
 		}
 	});
 			

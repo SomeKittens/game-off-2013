@@ -54,7 +54,8 @@ var animationFactory = {
             grabPunch: ani([60, 66], 6),
             pain1: ani([66, 71], 1),
             pain2: ani([71, 76], 1),
-            idle: ani([76, 100], 1)
+            idle: ani([76, 100], 1),
+            die: ani([100, 111], 3)
           }
         };
         break;

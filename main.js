@@ -17,6 +17,7 @@ canvas.Scene.new({
       george2still: 'img/george2still.png',
       george2sprites: 'img/george2.png',
       thugStill: 'img/thugstill.png',
+      thugDead: 'img/thugdead.png',
       thugSprites: 'img/thug.png',
       enemy1still: 'img/enemy1still.png',
       enemy1walk: 'img/enemy1walk.png'
@@ -45,9 +46,15 @@ canvas.Scene.new({
     self.scrolling.setMainElement(self.george.el);
 
     var testThug = Thug.call(self, 100, 165);
-    var testThug2 = Thug.call(self, 400, 165);
+    var testThug0 = Thug.call(self, 400, 165);
+    var testThug1 = Thug.call(self, 350, 165);
+    var testThug2 = Thug.call(self, 300, 165);
+    var testThug3 = Thug.call(self, 250, 165);
     self.thugs.push(testThug);
+    self.thugs.push(testThug0);
+    self.thugs.push(testThug1);
     self.thugs.push(testThug2);
+    self.thugs.push(testThug3);
 
     var foreground = self.createElement();
     foreground.drawImage('bg1');
