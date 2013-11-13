@@ -1,81 +1,101 @@
-var george = {
-  init: function(canvas) {
-    var self = this
-      , g = gameVars.george;
-    canvas.Input.keyDown(Input.Right, function() {
-      if (!self.intervals.walkingRight) {
-        self.intervals.walkingRight = setInterval(function() {
-          self.george.x += g.moveSpace;
-        }, g.moveTime);
-      }
-      if (!self.jumping) {
-        self.george2Walk.play('move', 'loop');
-      }
-    });
-    canvas.Input.keyDown(Input.Left, function() {
-      if (!self.intervals.walkingLeft) {
-        self.intervals.walkingLeft = setInterval(function() {
-          self.george.x -= g.moveSpace;
-        }, g.moveTime);
-      }
-      if (!self.jumping) {
-        self.george2Walk.play('move', 'loop');
-      }
-    });
+var George = function(xCoord, yCoord) {
+  var self = this
+    , george = self.createElement();
+  george.drawImage('george2still');
+  george.x = xCoord || 0;
+  george.y = yCoord || 0;
+  george.health = 2;
+  motions = animationFactory.generate('george2');
+  motions.add(george);
 
-    canvas.Input.keyUp(Input.Right, function() {
-      self.george2Walk.stop();
-      clearInterval(self.intervals.walkingRight);
-      self.intervals.walkingRight = null;
-    });
-    canvas.Input.keyUp(Input.Left, function() {
-      self.george2Walk.stop();
-      clearInterval(self.intervals.walkingLeft);
-      self.intervals.walkingLeft = null;
-    });
-
-    // Attacking
-    canvas.Input.keyDown(Input.A, function() {
-      self.george2Walk.stop();
-      if (Math.random() > 0.5) {
-        self.george2Walk.play('attack0', 'stop');
-      } else {
-        self.george2Walk.play('attack1', 'stop');
-      }
-    });
-
-    canvas.Input.keyDown([Input.Up, Input.Z], function() {
-      if (self.jumping) {
-        return;
-      }
-      self.jumping = true;
-      self.george2Walk.stop();
-      // No idea why this only works with loop.
-      self.george2Walk.play('jump', 'stop');
-      var goUp = function() {
-        if (self.george.y > (165 - g.jumpHeight)) {
-          setTimeout(goUp, g.jumpIntervalTime);
-        } else {
-          setTimeout(goDown, g.jumpIntervalTime);
+  return {
+    el: george,
+    motions: motions,
+    update: function(canvas) {
+      var self = this
+        , g = gameVars.george;
+      canvas.Input.keyDown(Input.Right, function() {
+        if (!self.intervals.walkingRight) {
+          self.intervals.walkingRight = setInterval(function() {
+            george.x += g.moveSpace;
+          }, g.moveTime);
         }
-        self.george.y -= g.jumpSpace;
-      };
-      var goDown = function() {
-        if (self.george.y < 165) {
-          setTimeout(goDown, g.jumpIntervalTime);
-          self.george.y += g.jumpSpace;
+        if (!self.jumping) {
+          motions.play('move', 'loop');
+        }
+      });
+      canvas.Input.keyDown(Input.Left, function() {
+        if (!self.intervals.walkingLeft) {
+          self.intervals.walkingLeft = setInterval(function() {
+            george.x -= g.moveSpace;
+          }, g.moveTime);
+        }
+        if (!self.jumping) {
+          motions.play('move', 'loop');
+        }
+      });
+
+      canvas.Input.keyUp(Input.Right, function() {
+        motions.stop();
+        clearInterval(self.intervals.walkingRight);
+        self.intervals.walkingRight = null;
+      });
+      canvas.Input.keyUp(Input.Left, function() {
+        motions.stop();
+        clearInterval(self.intervals.walkingLeft);
+        self.intervals.walkingLeft = null;
+      });
+
+      // Attacking
+      canvas.Input.keyDown(Input.A, function() {
+        motions.stop();
+        if (Math.random() > 0.5) {
+          motions.play('attack0', 'stop');
         } else {
-          self.jumping = false;
-          if (canvas.Input.isPressed([Input.Left, Input.Right])) {
-            self.george2Walk.play('move', 'loop');
-          } else {
-            self.george.drawImage('george2still');
+          motions.play('attack1', 'stop');
+        }
+        // If there are any thugs in front of george, kill them
+        self.thugs.forEach(function(thug) {
+          var dist = Math.abs(george.x - thug.el.x);
+          if (dist < 40) {
+            thug.kill();
           }
+        });
+      });
+
+      canvas.Input.keyDown([Input.Up, Input.Z], function() {
+        if (self.jumping) {
+          return;
         }
-      };
-      goUp();
-    });
-  }
+        self.jumping = true;
+        motions.stop();
+        // No idea why this only works with loop.
+        motions.play('jump', 'loop');
+        var goUp = function() {
+          if (george.y > (165 - g.jumpHeight)) {
+            setTimeout(goUp, g.jumpIntervalTime);
+          } else {
+            setTimeout(goDown, g.jumpIntervalTime);
+          }
+          george.y -= g.jumpSpace;
+        };
+        var goDown = function() {
+          if (george.y < 165) {
+            setTimeout(goDown, g.jumpIntervalTime);
+            george.y += g.jumpSpace;
+          } else {
+            self.jumping = false;
+            if (canvas.Input.isPressed([Input.Left, Input.Right])) {
+              motions.play('move', 'loop');
+            } else {
+              motions.stop();
+            }
+          }
+        };
+        goUp();
+      });
+    }
+  };
 };
 
 var enemy1 = {
@@ -104,28 +124,56 @@ var enemy1 = {
 };
 
 var Thug = function(xCoord, yCoord) {
-  var self = this;
-  var thug = self.createElement();
+  var self = this
+    , thug = self.createElement()
+    , t = gameVars.thug
+    , motions = animationFactory.generate('thug');
+
   thug.x = xCoord || 0;
   thug.y = yCoord || 0;
+  thug.health = t.health;
   thug.drawImage('thugStill');
-  var motions = animationFactory.generate('thug');
   motions.add(thug);
+
+  var attack = function() {
+    if (thug.attacking) {
+      waiting++;
+      if (waiting > 60) {
+        waiting = 0;
+        thug.attacking = false;
+      }
+      return;
+    }
+    thug.attacking = true;
+    waiting = 0;
+    var action = Math.random() > 0.5 ? 'grab' : 'grabPunch';
+    motions.play(action, 'stop');
+  };
   return {
     el: thug,
     motions: motions,
     update: function(canvas) {
       var self = this;
-      var dist = self.george.x - thug.x;
-      if (dist >= 0 && dist < 100) {
+      var dist = self.george.el.x - thug.x;
+
+      if (dist > 25 && dist < 100) {
+        thug.waiting = 0;
+        thug.attacking = false;
         thug.x += 1;
         motions.play('walk', 'loop');
-      } else if (dist < 0 && dist > -100) {
+      } else if (dist < -25 && dist > -100) {
+        thug.waiting = 0;
+        thug.attacking = false;
         thug.x -= 1;
         motions.play('walk', 'loop');
+      } else if (dist <= 25 && dist >= -25) {
+        attack();
       } else {
         motions.stop();
       }
+    },
+    kill: function() {
+      thug.hide();
     }
   };
 };

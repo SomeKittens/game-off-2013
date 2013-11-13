@@ -42,20 +42,18 @@ canvas.Scene.new({
     self.bg0.drawImage('bg0');
     stage.append(self.bg0);
 
-    self.george = self.createElement();
-    self.george.drawImage('george2still');
-    self.george2Walk = animationFactory.generate('george2');
-    self.george2Walk.add(self.george);
+    self.george = George.call(self, 0, 165);
+    console.log(self.george);
+    self.scrolling.setMainElement(self.george.el);
 
-    self.george.y = 165;
-    self.scrolling.setMainElement(self.george);
-
-    var testThug = Thug.call(self, 300, 165);
+    var testThug = Thug.call(self, 100, 165);
+    var testThug2 = Thug.call(self, 400, 165);
     self.thugs.push(testThug);
+    self.thugs.push(testThug2);
 
     var foreground = self.createElement();
     foreground.drawImage('bg1');
-    foreground.append(self.george);
+    foreground.append(self.george.el);
     self.thugs.forEach(function(thug) {
       foreground.append(thug.el);
     })
@@ -67,23 +65,10 @@ canvas.Scene.new({
        height: 256
     });
     stage.append(foreground);
-
-    
-    /*
-    self.enemy1 = self.createElement();
-    self.enemy1.drawImage('enemy1still');
-    self.enemy1Walk = animationFactory.generate('enemy1walk');
-    self.enemy1Walk.play('move', 'loop');
-    enemy1.init.call(self);
-    self.enemy1.x = 400;
-    self.enemy1.y = 165;
-    stage.append(self.enemy1);
-    */
-
   },
   render: function(stage) {
     var self = this;
-    george.init.call(self, canvas);
+    self.george.update.call(self, canvas);
     self.thugs.forEach(function(thug) {
       thug.update.call(self);
     });

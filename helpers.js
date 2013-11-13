@@ -6,6 +6,10 @@ var gameVars = {
     jumpIntervalTime: 10,
     moveSpace: 2,
     moveTime: 25
+  },
+  thug: {
+    health: 3,
+    moveSpace: 1
   }
 };
 
@@ -42,13 +46,13 @@ var animationFactory = {
         };
         break;
       case 'thug':
-      hei = 7;
+        hei = 7;
         datums = {
           images: 'thugSprites',
           animations: {
             walk: ani([0, 49], 1),
-            grab: ani([50, 60], 1),
-            grabPunch: ani([60, 66], 1),
+            grab: ani([50, 60], 3),
+            grabPunch: ani([60, 66], 6),
             pain1: ani([66, 71], 1),
             pain2: ani([71, 76], 1),
             idle: ani([76, 100], 1)
