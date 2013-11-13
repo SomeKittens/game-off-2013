@@ -51,7 +51,7 @@ var george = {
       self.jumping = true;
       self.george2Walk.stop();
       // No idea why this only works with loop.
-      self.george2Walk.play('jump', 'loop');
+      self.george2Walk.play('jump', 'stop');
       var goUp = function() {
         if (self.george.y > (165 - g.jumpHeight)) {
           setTimeout(goUp, g.jumpIntervalTime);
