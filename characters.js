@@ -37,12 +37,16 @@ var George = function(xCoord, yCoord) {
       });
 
       canvas.Input.keyUp(Input.Right, function() {
-        motions.stop();
+        if (!self.jumping) {
+          motions.stop();
+        }
         clearInterval(self.intervals.walkingRight);
         self.intervals.walkingRight = null;
       });
       canvas.Input.keyUp(Input.Left, function() {
-        motions.stop();
+        if (!self.jumping) {
+          motions.stop();
+        }
         clearInterval(self.intervals.walkingLeft);
         self.intervals.walkingLeft = null;
       });
@@ -51,9 +55,9 @@ var George = function(xCoord, yCoord) {
       canvas.Input.keyDown(Input.A, function() {
         motions.stop();
         if (Math.random() > 0.5) {
-          motions.play('attack0', 'stop');
+          motions.play('attack0', 'stop', 'george2still');
         } else {
-          motions.play('attack1', 'stop');
+          motions.play('attack1', 'stop', 'george2still');
         }
         // If there are any thugs in front of george, kill them
         self.thugs.forEach(function(thug) {
@@ -69,11 +73,12 @@ var George = function(xCoord, yCoord) {
           return;
         }
         self.jumping = true;
+        self.launchY = george.y;
         motions.stop();
         // No idea why this only works with loop.
-        motions.play('jump', 'loop');
+        motions.play('jump', 'loop', 'george2still');
         var goUp = function() {
-          if (george.y > (165 - g.jumpHeight)) {
+          if (george.y > (self.launchY - g.jumpHeight)) {
             setTimeout(goUp, g.jumpIntervalTime);
           } else {
             setTimeout(goDown, g.jumpIntervalTime);
@@ -81,7 +86,7 @@ var George = function(xCoord, yCoord) {
           george.y -= g.jumpSpace;
         };
         var goDown = function() {
-          if (george.y < 165) {
+          if (george.y < self.launchY) {
             setTimeout(goDown, g.jumpIntervalTime);
             george.y += g.jumpSpace;
           } else {

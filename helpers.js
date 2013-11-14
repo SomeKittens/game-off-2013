@@ -10,7 +10,7 @@ var gameVars = {
   thug: {
     moveSpace: 1
   },
-  noLose: false
+  noLose: true
 };
 
 
