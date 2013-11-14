@@ -34,7 +34,7 @@ var animationFactory = {
     };
     switch (character) {
       case 'george2':
-        hei = 5;
+        hei = 8;
         datums = {
           images: 'george2sprites',
           animations: {
