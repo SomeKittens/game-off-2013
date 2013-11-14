@@ -40,8 +40,10 @@ var animationFactory = {
           animations: {
             move: ani([0, 49], 1),
             jump: ani([50, 60], 4),
-            attack0: ani([61, 65], 2),
-            attack1: ani([66, 69], 2)
+            attack0: ani([61, 66], 2),
+            attack1: ani([67, 72], 2),
+			crouchwalk: ani([73, 123], 1)
+
           }
         };
         break;
